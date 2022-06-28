@@ -1,4 +1,4 @@
-import models.User;
+import models.Word;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -13,35 +13,26 @@ public class Test {
         StandardServiceRegistry standardServiceRegistry =new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml")
                 .build();
         Metadata metadata = new MetadataSources(standardServiceRegistry)
-                .addAnnotatedClass(User.class)
+                .addAnnotatedClass(Word.class)
                 .getMetadataBuilder()
                 .build();
         SessionFactory sessionFactory = metadata
                 .getSessionFactoryBuilder()
                 .build();
         Session session = sessionFactory.openSession();
-//        session.beginTransaction();
-//
-//        session.save(new User("Mykola"));
-//        session.save(new User("Serj"));
-//
-//
-//        session.getTransaction().commit();
-
-
-//        List<User> users = session.createNativeQuery("select *  from User",User.class).getResultList();
-//        System.out.println(users);
-
-//        List<User> users = session.createQuery("select u  from User u",User.class).getResultList();
-//        System.out.println(users);
-        User user = session.find(User.class, 1);
-        User user1 = session.find(User.class, 2);
         session.beginTransaction();
-        session.delete(user);
-        session.delete(user1);
+
+        session.save(new Word("Privet"));
+        session.save(new Word("Kak dela"));
+        session.save(new Word("Poka"));
+
+
         session.getTransaction().commit();
 
 
+
+        List<Word> words = session.createQuery("select w  from Word w",Word.class).getResultList();
+        System.out.println(words);
         session.close();
         sessionFactory.close();
     }
